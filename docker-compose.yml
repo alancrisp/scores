@@ -1,9 +1,16 @@
-version: '3.1'
+version: '3.2'
 services:
     db:
         image: mysql
         restart: always
         environment:
             MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+            MYSQL_DATABASE: "${DB_APP_DATABASE}"
             MYSQL_USER: "${DB_APP_USER}"
             MYSQL_PASSWORD: "${DB_APP_PASSWORD}"
+        volumes:
+            - dbdata:/var/lib/mysql
+            - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+
+volumes:
+    dbdata:
