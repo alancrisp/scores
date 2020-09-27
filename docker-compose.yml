@@ -12,5 +12,17 @@ services:
             - dbdata:/var/lib/mysql
             - ./docker/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
 
+    web:
+        build:
+            context: .
+            dockerfile: docker/web/Dockerfile
+        environment:
+            FLASK_APP: /app
+            FLASK_ENV: development
+        ports:
+            - 5000:5000
+        volumes:
+            - ./app:/app
+
 volumes:
     dbdata:
