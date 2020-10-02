@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask import render_template
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -21,5 +22,9 @@ def create_app(test_config=None):
     @app.route('/')
     def home():
         return 'Scores Home'
+
+    @app.route('/events')
+    def events():
+        return render_template('events.html')
 
     return app
