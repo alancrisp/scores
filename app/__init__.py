@@ -21,7 +21,7 @@ def create_app(test_config=None):
 
     @app.route('/')
     def home():
-        return 'Scores Home'
+        return events()
 
     @app.route('/events')
     def events():
