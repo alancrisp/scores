@@ -20,14 +20,12 @@ def create_app(test_config=None):
         pass
 
     from . import course
+    from . import event
     app.register_blueprint(course.bp)
+    app.register_blueprint(event.bp)
 
     @app.route('/')
     def home():
-        return events()
-
-    @app.route('/events')
-    def events():
-        return render_template('events.html')
+        return event.events()
 
     return app
