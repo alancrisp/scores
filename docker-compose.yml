@@ -17,12 +17,12 @@ services:
             context: .
             dockerfile: docker/web/Dockerfile
         environment:
-            FLASK_APP: /app
+            FLASK_APP: /scores
             FLASK_ENV: development
         ports:
             - 5000:5000
         volumes:
-            - ./app:/app
+            - ./scores:/scores
 
 volumes:
     dbdata:
