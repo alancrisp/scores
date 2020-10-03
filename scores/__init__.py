@@ -19,6 +19,9 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    from . import course
+    app.register_blueprint(course.bp)
+
     @app.route('/')
     def home():
         return events()
@@ -26,9 +29,5 @@ def create_app(test_config=None):
     @app.route('/events')
     def events():
         return render_template('events.html')
-
-    @app.route('/courses')
-    def courses():
-        return render_template('courses.html')
 
     return app
