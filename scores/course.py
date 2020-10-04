@@ -16,4 +16,4 @@ def create():
     if request.method == 'POST' and form.validate():
         return 'TODO: create course' # TODO
 
-    return render_template('course-create.html')
+    return render_template('course-create.html', form=form)

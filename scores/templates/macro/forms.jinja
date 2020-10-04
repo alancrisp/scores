@@ -1,0 +1,23 @@
+{% macro render_field(field) %}
+    <div class="form-group">
+        {% set id = field.name ~ 'Input' %}
+        {% if field.errors %}
+            {% set class %}form-control is-invalid{% endset %}
+        {% else %}
+            {% set class %}form-control{% endset %}
+        {% endif %}
+        {{ field.label(for=id) }}
+        {{ field(class='form-control', id=id) }}
+        {% if field.errors %}
+            <div class="invalid-feedback">
+                {% for error in field.errors %}
+                    {{ error }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro render_button(field) %}
+    {{ field(class='btn btn-primary') }}
+{% endmacro %}
