@@ -19,6 +19,10 @@ services:
         environment:
             FLASK_APP: /scores
             FLASK_ENV: development
+            DB_HOST: db
+            DB_USER: "${DB_APP_USER}"
+            DB_PASSWORD: "${DB_APP_PASSWORD}"
+            DB_DATABASE: "${DB_APP_DATABASE}"
         ports:
             - 5000:5000
         volumes:
