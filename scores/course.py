@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, render_template, request, url_for
+    Blueprint, redirect, render_template, request, url_for
 )
 
 from . import db
@@ -31,6 +31,6 @@ def create():
             (form.name.data, form.location.data, form.city.data, form.holes.data)
         )
         db.connection.commit()
-        return 'TODO: redirect to newly created course' # TODO
+        return redirect(url_for('course.view', course_id=cursor.lastrowid))
 
     return render_template('course-create.html', form=form)
