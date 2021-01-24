@@ -16,6 +16,7 @@ def create_app(test_config=None):
     app.config['MYSQL_USER'] = os.environ.get('DB_USER')
     app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
     app.config['MYSQL_DB'] = os.environ.get('DB_DATABASE')
+    app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
     if test_config is None:
         app.config.from_pyfile('config.py', silent=True)

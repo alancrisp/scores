@@ -11,6 +11,16 @@ bp = Blueprint('course', __name__, url_prefix='/course')
 def courses():
     return render_template('courses.html')
 
+@bp.route('/<course_id>')
+def view(course_id=0):
+    cursor = db.connection.cursor()
+    cursor.execute(
+        '''SELECT * FROM course WHERE courseId = %s''',
+        (course_id)
+    )
+    course = cursor.fetchone()
+    return render_template('course-view.html', course=course)
+
 @bp.route('/create', methods=('GET', 'POST'))
 def create():
     form = CourseForm(request.form)
