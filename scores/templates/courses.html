@@ -15,6 +15,7 @@
                     <th scope="col">Location</th>
                     <th scope="col">City</th>
                     <th scope="col">Holes</th>
+                    <th scope="col"><!-- Options --></th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,7 @@
                     <td>{{ course.location }}</td>
                     <td>{{ course.city }}</td>
                     <td>{{ course.holes }}</td>
+                    <td><a href="{{ url_for('course.view', course_id=course.courseId) }}">View</a></td>
                 </tr>
             {% else %}
                 <tr>
