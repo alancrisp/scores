@@ -9,7 +9,10 @@ bp = Blueprint('course', __name__, url_prefix='/course')
 
 @bp.route('')
 def courses():
-    return render_template('courses.html')
+    cursor = db.connection.cursor()
+    cursor.execute('SELECT * FROM course')
+    courses = cursor.fetchall()
+    return render_template('courses.html', courses=courses)
 
 @bp.route('/<course_id>')
 def view(course_id=0):
