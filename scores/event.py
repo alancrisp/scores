@@ -9,7 +9,10 @@ bp = Blueprint('event', __name__, url_prefix='/event')
 
 @bp.route('')
 def events():
-    return render_template('events.html')
+    cursor = db.connection.cursor()
+    cursor.execute('SELECT e.*, c.name FROM event e INNER JOIN course c USING (courseId)')
+    events = cursor.fetchall()
+    return render_template('events.html', events=events)
 
 @bp.route('/<event_id>')
 def view(event_id=0):

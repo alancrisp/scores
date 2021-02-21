@@ -13,16 +13,16 @@
                     <th scope="col">#</th>
                     <th scope="col">Course</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Winner</th>
+                    <th scope="col"><!-- Options --></th>
                 </tr>
             </thead>
             <tbody>
             {% for event in events %}
                 <tr>
-                    <th scope="row">{{ event.id }}</th>
-                    <td>{{ event.name }}</td>
-                    <td>{{ event.date }}</td>
-                    <td>{{ event.winner }}</td>
+                    <th scope="row">{{ event.eventId }}</th>
+                    <td><a href="{{ url_for('course.view', course_id=event.courseId) }}">{{ event.name }}</a></td>
+                    <td>{{ event.eventDate }}</td>
+                    <td><a href="{{ url_for('event.view', event_id=event.eventId) }}">View</a></td>
                 </tr>
             {% else %}
                 <tr>
