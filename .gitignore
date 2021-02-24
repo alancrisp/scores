@@ -1,4 +1,3 @@
 .env
-scores/__pycache__
-scores/form/__pycache__
+*__pycache__
 venv
