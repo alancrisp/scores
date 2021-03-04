@@ -15,6 +15,11 @@ class CourseRepo:
         )
         return cursor.fetchone()
 
+    def get_menu_options(self):
+        cursor = self.connection.cursor()
+        cursor.execute('SELECT courseId, name FROM course ORDER BY name ASC')
+        return cursor.fetchall()
+
     def create(self, name, location, city, holes):
         cursor = self.connection.cursor()
         cursor.execute(
