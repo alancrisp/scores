@@ -2,9 +2,9 @@ import os
 
 from flask import Flask
 from flask import render_template
-from flask_mysqldb import MySQL
 
-db = MySQL()
+from injector import Injector, inject
+from flask_injector import FlaskInjector
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
@@ -28,15 +28,20 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    db.init_app(app)
-
     from . import course
     from . import event
     app.register_blueprint(course.bp)
     app.register_blueprint(event.bp)
 
+    from scores.repo.eventrepo import EventRepo
+
+    @inject
     @app.route('/')
-    def home():
-        return event.events()
+    def home(repo: EventRepo):
+        return event.events(repo)
+
+    from .servicemodule import ServiceModule
+    injector = Injector([ServiceModule(app)])
+    FlaskInjector(app=app, injector=injector)
 
     return app
