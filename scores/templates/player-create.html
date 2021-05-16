@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% import 'macro/forms.jinja' as forms %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>Create Player</h1>
+        </div>
+
+        <form method="post">
+            {{ forms.render_field(form.name) }}
+            {{ forms.render_button(form.submit) }}
+        </form>
+    </div>
+{% endblock %}

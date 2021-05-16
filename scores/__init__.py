@@ -30,8 +30,10 @@ def create_app(test_config=None):
 
     from . import course
     from . import event
+    from . import player
     app.register_blueprint(course.bp)
     app.register_blueprint(event.bp)
+    app.register_blueprint(player.bp)
 
     from scores.repo.eventrepo import EventRepo
 
