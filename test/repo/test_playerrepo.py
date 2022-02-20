@@ -23,6 +23,15 @@ class PlayerRepoTestCase(unittest.TestCase):
         self.db.connection.cursor().fetchall = MagicMock(return_value=players)
         self.assertEqual(players, self.repo.get_all())
 
+    def test_gets_all_not_at_event(self):
+        players = [
+            {"playerId": 1, "name": "Joe Bloggs"},
+            {"playerId": 2, "name": "Erin Stone"},
+        ]
+
+        self.db.connection.cursor().fetchall = MagicMock(return_value=players)
+        self.assertEqual(players, self.repo.get_all_not_at_event(1))
+
     def test_gets_by_id(self):
         player = {"playerId": 1, "name": "Joe Bloggs"}
         self.db.connection.cursor().fetchone = MagicMock(return_value=player)

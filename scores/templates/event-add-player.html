@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>{{ event.name }}</h1>
+        </div>
+        <p>
+            <strong>Date:</strong> {{ event.eventDate }}<br>
+            <strong>Player:</strong> {{ player.name }}<br>
+        </p>
+
+        <h2>Scores</h2>
+        <p>TODO</p>
+    </div>
+{% endblock %}
