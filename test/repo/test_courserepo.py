@@ -55,3 +55,6 @@ class CourseRepoTestCase(unittest.TestCase):
             ('Test Course #3', 'Somewhere', 'Sheffield', 18)
         )
         self.db.connection.commit.assert_called_once()
+
+if __name__ == '__main__':
+    unittest.main()

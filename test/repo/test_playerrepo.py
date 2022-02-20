@@ -44,3 +44,6 @@ class PlayerRepoTestCase(unittest.TestCase):
             ('Joe Bloggs',)
         )
         self.db.connection.commit.assert_called_once()
+
+if __name__ == '__main__':
+    unittest.main()
