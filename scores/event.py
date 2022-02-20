@@ -8,6 +8,7 @@ from scores.form.eventplayerform import EventPlayerForm
 from scores.repo.courserepo import CourseRepo
 from scores.repo.eventrepo import EventRepo
 from scores.repo.playerrepo import PlayerRepo
+from scores.repo.scorerepo import ScoreRepo
 
 bp = Blueprint('event', __name__, url_prefix='/event')
 
@@ -19,14 +20,16 @@ def events(repo: EventRepo):
 
 @inject
 @bp.route('/<event_id>', methods=('GET', 'POST'))
-def view(repo: EventRepo, playerrepo: PlayerRepo, event_id=0):
+def view(repo: EventRepo, playerrepo: PlayerRepo, scorerepo: ScoreRepo, event_id=0):
     event = repo.get_by_id(event_id)
     form = EventPlayerForm(request.form, eventId=event_id) # TODO add to service container
     form.player.choices = [(p['playerId'], p['name']) for p in playerrepo.get_menu_options_for_event(event_id)]
     if request.method == 'POST' and form.validate():
         return redirect(url_for('event.add_player', event_id=event_id, player_id=form.player.data))
 
-    return render_template('event-view.html', event=event, form=form)
+    scores = scorerepo.get_by_event(event_id)
+
+    return render_template('event-view.html', event=event, form=form, scores=scores)
 
 @inject
 @bp.route('/create', methods=('GET', 'POST'))
@@ -42,7 +45,16 @@ def create(repo: EventRepo, courserepo: CourseRepo):
 
 @inject
 @bp.route('/<event_id>/add-player/<player_id>', methods=('GET', 'POST'))
-def add_player(repo: EventRepo, playerrepo: PlayerRepo, event_id=0, player_id=0):
+def add_player(repo: EventRepo, playerrepo: PlayerRepo, scorerepo: ScoreRepo, event_id=0, player_id=0):
     event = repo.get_by_id(event_id)
     player = playerrepo.get_by_id(player_id)
+    if request.method == 'POST':
+        scores = {}
+        for field in request.form:
+            if field.startswith('hole-'):
+                hole = field[5:]
+                scores[hole] = request.form[field]
+        scorerepo.create(event_id, player_id, scores)
+        return redirect(url_for('event.view', event_id=event_id))
+
     return render_template('event-add-player.html', event=event, player=player)

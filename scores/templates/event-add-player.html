@@ -11,6 +11,17 @@
         </p>
 
         <h2>Scores</h2>
-        <p>TODO</p>
+        <form method="post" action="">
+            <input type="hidden" name="testinput" value="hello" />
+            {% for hole in range(1, event.holes + 1) %}
+                <div class="form-group">
+                    <label for="hole-{{ hole }}">Hole {{ hole }}</label>
+                    <input id="hole-{{ hole }}" class="form-control" name="hole-{{ hole }}" type="number" required="required" min="1" />
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </div>
+        </form>
     </div>
 {% endblock %}

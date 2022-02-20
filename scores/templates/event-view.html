@@ -20,8 +20,21 @@
             <thead>
                 <tr>
                     <th scope="col">Hole</th>
+                    {% for player in scores %}
+                        <th scope="col">{{ player }}</th>
+                    {% endfor %}
                 </tr>
             </thead>
+            <tbody>
+                {% for hole in range(1, event.holes + 1) %}
+                <tr>
+                    <td>{{ hole }}</td>
+                    {% for player in scores %}
+                        <td>{{ scores[player][hole] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 
