@@ -23,19 +23,19 @@ class PlayerRepoTestCase(unittest.TestCase):
         self.db.connection.cursor().fetchall = MagicMock(return_value=players)
         self.assertEqual(players, self.repo.get_all())
 
-    def test_gets_all_not_at_event(self):
+    def test_gets_by_id(self):
+        player = {"playerId": 1, "name": "Joe Bloggs"}
+        self.db.connection.cursor().fetchone = MagicMock(return_value=player)
+        self.assertEqual(player, self.repo.get_by_id(1))
+
+    def test_gets_menu_options_for_event(self):
         players = [
             {"playerId": 1, "name": "Joe Bloggs"},
             {"playerId": 2, "name": "Erin Stone"},
         ]
 
         self.db.connection.cursor().fetchall = MagicMock(return_value=players)
-        self.assertEqual(players, self.repo.get_all_not_at_event(1))
-
-    def test_gets_by_id(self):
-        player = {"playerId": 1, "name": "Joe Bloggs"}
-        self.db.connection.cursor().fetchone = MagicMock(return_value=player)
-        self.assertEqual(player, self.repo.get_by_id(1))
+        self.assertEqual(players, self.repo.get_menu_options_for_event(1))
 
     def test_creates_player(self):
         self.repo.create('Joe Bloggs')

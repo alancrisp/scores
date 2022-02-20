@@ -9,14 +9,6 @@ class PlayerRepo:
         cursor.execute('SELECT * FROM player')
         return cursor.fetchall()
 
-    def get_all_not_at_event(self, event_id):
-        cursor = self.db.connection.cursor()
-        cursor.execute(
-            '''SELECT * FROM player p LEFT JOIN score s ON s.playerId = p.playerId AND s.eventId = %s WHERE s.eventId IS NULL''',
-            (event_id,)
-        )
-        return cursor.fetchall()
-
     def get_by_id(self, player_id):
         cursor = self.db.connection.cursor()
         cursor.execute(
@@ -24,6 +16,14 @@ class PlayerRepo:
             (player_id,)
         )
         return cursor.fetchone()
+
+    def get_menu_options_for_event(self, event_id):
+        cursor = self.db.connection.cursor()
+        cursor.execute(
+            '''SELECT * FROM player p LEFT JOIN score s ON s.playerId = p.playerId AND s.eventId = %s WHERE s.eventId IS NULL''',
+            (event_id,)
+        )
+        return cursor.fetchall()
 
     def create(self, name):
         cursor = self.db.connection.cursor()

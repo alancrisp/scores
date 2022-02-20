@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
 
+{% import 'macro/forms.jinja' as forms %}
+
 {% block content %}
     <div class="container">
         <div class="page-header">
@@ -26,29 +28,24 @@
     <div class="modal fade" id="addPlayerModal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="post" action="{{ url_for('event.add_player') }}">
-                    <input type="hidden" name="eventId" value="{{ event.eventId }}" />
+                <form method="post">
+                    {{ form.eventId }}
                     <div class="modal-header">
                         <h5 class="modal-title">Add Player</h5>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        {% if players|length == 0 %}
+                        {% if form.player.choices|length == 0 %}
                             <p>There are no players availabe to add to this event.</p>
                             <p>Either all players have already been added or there are no players in the system.</p>
                         {% else %}
-                            <p>Please select a player.</p>
-                            <select name="playerId" class="form-control">
-                                {% for player in players %}
-                                    <option value="{{ player.playerId }}">{{ player.name }}</option>
-                                {% endfor %}
-                            </select>
+                            {{ forms.render_field(form.player) }}
                         {% endif %}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        {% if players|length > 0 %}
-                            <input type="submit" class="btn btn-primary" value="Add Player" />
+                        {% if form.player.choices|length > 0 %}
+                            {{ forms.render_button(form.submit) }}
                         {% endif %}
                     </div>
                 </form>

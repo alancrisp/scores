@@ -4,6 +4,7 @@ from flask import (
 from injector import inject
 
 from scores.form.eventform import EventForm
+from scores.form.eventplayerform import EventPlayerForm
 from scores.repo.courserepo import CourseRepo
 from scores.repo.eventrepo import EventRepo
 from scores.repo.playerrepo import PlayerRepo
@@ -17,11 +18,15 @@ def events(repo: EventRepo):
     return render_template('events.html', events=events)
 
 @inject
-@bp.route('/<event_id>')
+@bp.route('/<event_id>', methods=('GET', 'POST'))
 def view(repo: EventRepo, playerrepo: PlayerRepo, event_id=0):
     event = repo.get_by_id(event_id)
-    players = playerrepo.get_all_not_at_event(event_id)
-    return render_template('event-view.html', event=event, players=players)
+    form = EventPlayerForm(request.form, eventId=event_id) # TODO add to service container
+    form.player.choices = [(p['playerId'], p['name']) for p in playerrepo.get_menu_options_for_event(event_id)]
+    if request.method == 'POST' and form.validate():
+        return redirect(url_for('event.add_player', event_id=event_id, player_id=form.player.data))
+
+    return render_template('event-view.html', event=event, form=form)
 
 @inject
 @bp.route('/create', methods=('GET', 'POST'))
@@ -36,10 +41,8 @@ def create(repo: EventRepo, courserepo: CourseRepo):
     return render_template('event-create.html', form=form)
 
 @inject
-@bp.route('/add-player', methods=['POST'])
-def add_player(repo: EventRepo, playerrepo: PlayerRepo):
-    event_id = request.form['eventId']
+@bp.route('/<event_id>/add-player/<player_id>', methods=('GET', 'POST'))
+def add_player(repo: EventRepo, playerrepo: PlayerRepo, event_id=0, player_id=0):
     event = repo.get_by_id(event_id)
-    player_id = request.form['playerId']
     player = playerrepo.get_by_id(player_id)
     return render_template('event-add-player.html', event=event, player=player)
