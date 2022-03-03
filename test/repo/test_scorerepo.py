@@ -64,5 +64,14 @@ class ScoreRepoTestCase(unittest.TestCase):
         self.db.connection.cursor().fetchall = MagicMock(return_value=scores)
         self.assertEqual(expected, self.repo.get_by_event(2))
 
+    def test_gets_hole_in_one_leaderboard(self):
+        leaderboard = [
+            {"name": "Joe Bloggs", "holesInOne": 14},
+            {"name": "Erin Stone", "holesInOne": 8},
+        ]
+
+        self.db.connection.cursor().fetchall = MagicMock(return_value=leaderboard)
+        self.assertEqual(leaderboard, self.repo.get_holes_in_one_leaderboard())
+
 if __name__ == '__main__':
     unittest.main()

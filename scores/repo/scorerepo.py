@@ -23,3 +23,9 @@ class ScoreRepo:
             scores.setdefault(row['name'], {})[row['hole']] = row['score']
 
         return scores
+
+    def get_holes_in_one_leaderboard(self):
+        cursor = self.db.connection.cursor()
+        cursor.execute('SELECT p.name, COUNT(s.scoreId) AS holesInOne FROM score s INNER JOIN player p USING (playerId) WHERE s.score = 1 GROUP BY p.playerId')
+
+        return cursor.fetchall()
